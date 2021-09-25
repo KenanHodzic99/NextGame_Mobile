@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:core';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class APIService {
   static String username = "";
   static String password = "";
+  static String baseUrl = "http://192.168.0.14:5010/api/";
   String route;
 
   APIService({required this.route});
@@ -18,14 +18,14 @@ class APIService {
 
   static Future<List<dynamic>?> Get(String route, dynamic object) async {
     String queryString = Uri(queryParameters: object).query;
-    String baseUrl = "http://192.168.0.14:5010/api/" + route;
+    String osnovniUrl = baseUrl + route;
     if (object != null) {
-      baseUrl = baseUrl + '?' + queryString;
+      osnovniUrl = osnovniUrl + '?' + queryString;
     }
     final String basicAuth =
         'Basic ' + base64Encode(utf8.encode('$username:$password'));
     final response = await http.get(
-      Uri.parse(baseUrl),
+      Uri.parse(osnovniUrl),
       headers: {HttpHeaders.authorizationHeader: basicAuth},
     );
     if (response.statusCode == 200) {
@@ -35,11 +35,11 @@ class APIService {
   }
 
   static Future<dynamic> GetById(String route, dynamic id) async {
-    String baseUrl = "http://192.168.0.14:5010/api/" + route + '/' + id;
+    String osnovniUrl = baseUrl + route + '/' + id;
     final String basicAuth =
         'Basic ' + base64Encode(utf8.encode('$username:$password'));
     final response = await http.get(
-      Uri.parse(baseUrl),
+      Uri.parse(osnovniUrl),
       headers: {HttpHeaders.authorizationHeader: basicAuth},
     );
     if (response.statusCode == 200) {
@@ -50,7 +50,7 @@ class APIService {
 
   static Future<dynamic> Post(String route, String body,
       [bool? isRegistracija]) async {
-    String baseUrl = "http://192.168.0.14:5010/api/" + route;
+    String osnovniUrl = baseUrl + route;
     late String basicAuth;
     if (isRegistracija != null) {
       String tempPrivilegijeUser = "admin";
@@ -62,7 +62,7 @@ class APIService {
       basicAuth = 'Basic ' + base64Encode(utf8.encode('$username:$password'));
     }
     final response = await http.post(
-      Uri.parse(baseUrl),
+      Uri.parse(osnovniUrl),
       headers: <String, String>{
         "accept": "application/json",
         "content-type": "application/json",
@@ -77,11 +77,10 @@ class APIService {
   }
 
   static Future<dynamic> Update(String route, String body, dynamic id) async {
-    String baseUrl =
-        "http://192.168.0.14:5010/api/" + route + '/' + id.toString();
+    String osnovniUrl = baseUrl + route + '/' + id.toString();
     final String basicAuth =
         'Basic ' + base64Encode(utf8.encode('$username:$password'));
-    final response = await http.put(Uri.parse(baseUrl),
+    final response = await http.put(Uri.parse(osnovniUrl),
         headers: <String, String>{
           "accept": "application/json",
           'Content-Type': 'application/json; charset=UTF-8',
