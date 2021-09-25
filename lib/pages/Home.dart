@@ -76,7 +76,7 @@ class _HomeState extends State<Home> {
           } else {
             if (snapshot.hasError) {
               return Center(
-                child: Text('${snapshot.error}'),
+                child: Text('Morate dodati igre na listu da bi koristili ovu funkcionalnost.'),
               );
             } else {
               if(snapshot.data!.length < 1){
