@@ -38,9 +38,12 @@ class APIService {
     String osnovniUrl = baseUrl + route + '/' + id;
     final String basicAuth =
         'Basic ' + base64Encode(utf8.encode('$username:$password'));
-    final response = await http.get(
+    final response = await http.post(
       Uri.parse(osnovniUrl),
-      headers: {HttpHeaders.authorizationHeader: basicAuth},
+      headers: <String, String>{
+        "accept": "text/plain",
+        HttpHeaders.authorizationHeader: basicAuth
+      },
     );
     if (response.statusCode == 200) {
       return json.decode(response.body);

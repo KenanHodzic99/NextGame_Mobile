@@ -1,7 +1,9 @@
-import 'package:intl/intl.dart';
+import 'package:nextgame_mobile/models/IgraPlatforma.dart';
+import 'package:nextgame_mobile/models/IgraZanr.dart';
 import 'dart:convert';
 import 'package:nextgame_mobile/models/IzdavackaKuca.dart';
 import 'package:nextgame_mobile/models/SystemRequirements.dart';
+import 'package:nextgame_mobile/models/Tip.dart';
 
 class Igra {
   final igraId;
@@ -12,9 +14,10 @@ class Igra {
   final SystemRequirements? sysReq;
   final DateTime? datumIzdavanja;
   final IzdavackaKuca? izdavackaKuca;
-  final String tip;
+  final Tip? tip;
   final String cijena;
-  final String zanrovi;
+  final List<IgraZanr>? zanrovi;
+  final List<IgraPlatforma>? platforme;
 
   Igra({
     required this.igraId,
@@ -25,14 +28,32 @@ class Igra {
     this.sysReq,
     this.datumIzdavanja,
     this.izdavackaKuca,
-    required this.tip,
+    this.tip,
     required this.cijena,
-    required this.zanrovi,
+    this.zanrovi,
+    this.platforme
   });
 
   factory Igra.fromJson(Map<String, dynamic> json) {
     String stringByte = json["slika"] as String;
     List<int> bytes = base64.decode(stringByte);
+    final List<IgraZanr> zanrovi;
+    final List<IgraPlatforma> platforme;
+    if(json["zanrovi"] != null) {
+      var listaZanrova = json["zanrovi"] as List;
+      zanrovi = listaZanrova.map((e) => IgraZanr.fromJson(e)).toList();
+    }
+    else{
+      zanrovi = List.empty();
+    }
+    if(json["platforme"] != null) {
+      var listaPlatformi = json["platforme"] as List;
+      platforme = listaPlatformi.map((e) => IgraPlatforma.fromJson(e)).toList();
+    }
+    else{
+      platforme = List.empty();
+    }
+
     return Igra(
         igraId: int.parse(json["id"].toString()),
         naziv: json["naziv"],
@@ -42,9 +63,10 @@ class Igra {
         sysReq: json["systemRequirements"] == null ? json["systemRequirements"] : SystemRequirements.fromJson(json["systemRequirements"]),
         datumIzdavanja: DateTime.parse(json["datumIzdavanja"]),
         izdavackaKuca: json["izdavackaKuca"] == null ? json["izdavackaKuca"] : IzdavackaKuca.fromJson(json["izdavackaKuca"]),
-        tip: json["tip"],
+        tip: json["tip"] == null ? json["tip"] : Tip.fromJson(json["tip"]),
         cijena: json["cijena"].toString(),
-        zanrovi: json["zanrovi"]);
+        zanrovi: zanrovi,
+        platforme: platforme);
   }
 
   Map<String, dynamic> toJsonSearch() => {
@@ -52,7 +74,7 @@ class Igra {
         "ocjena": ocjena.isEmpty? null : ocjena,
         "godinaIzdavanja": datumIzdavanja == null ? null : datumIzdavanja!.year,
         "izdavackaKuca": izdavackaKuca == null? null : izdavackaKuca!.naziv,
-        "tip": null,
-        "cijena": cijena.isEmpty? null : cijena
+        "tip": tip == null ? null : tip!.naziv,
+        "cijena": cijena.isEmpty? null : cijena,
       };
 }

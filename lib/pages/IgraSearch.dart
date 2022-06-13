@@ -257,11 +257,11 @@ class _IgraSearchState extends State<IgraSearch> {
                   sysReq: null,
                   datumIzdavanja: widget.odabrano ? widget.pickedDate : null,
                   izdavackaKuca: _odabranaKuca,
-                  tip: "",
+                  tip: null,
                   cijena: cijenaController.text.isEmpty
                       ? ""
                       : cijenaController.text,
-                  zanrovi: "");
+                  zanrovi: null);
               Navigator.push(
                   context,
                   MaterialPageRoute(
