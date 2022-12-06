@@ -2,7 +2,6 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nextgame_mobile/models/Korisnik.dart';
-import 'package:nextgame_mobile/pages/gameList.dart';
 
 class userProfileShowcase extends StatelessWidget {
   final Korisnik? user;
@@ -232,11 +231,6 @@ class userProfileShowcase extends StatelessWidget {
                           color: Colors.white,
                           fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height,
-                      child: gameList(user: user, showNavi: false),
-                    )
                   ],
                 ),
               ),
