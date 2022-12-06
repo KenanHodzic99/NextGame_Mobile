@@ -7,7 +7,8 @@ import 'package:nextgame_mobile/services/APIService.dart';
 
 class gameList extends StatefulWidget {
   final Korisnik? user;
-  gameList({Key? key, this.user}) : super(key: key);
+  bool showNavi;
+  gameList({Key? key, this.user, this.showNavi=true}) : super(key: key);
 
   @override
   _gameListState createState() => _gameListState();
@@ -117,9 +118,9 @@ class _gameListState extends State<gameList> {
     }
 
     return Scaffold(
-      appBar: AppBar(
+      appBar: widget.showNavi ? AppBar(
         title: Text('Lista igrica'),
-      ),
+      ) : null,
       body: SingleChildScrollView(
           scrollDirection: Axis.horizontal, child: bodyWidget()),
     );

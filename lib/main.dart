@@ -37,8 +37,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         primaryColor: Color.fromRGBO(12, 33, 40, 1),
-        accentColor: Color.fromRGBO(33, 66, 68, 1),
         canvasColor: Color.fromRGBO(65, 130, 133, 1),
+        colorScheme: ColorScheme.fromSwatch().copyWith(primary: Color.fromRGBO(33, 66, 68, 1)),
       ),
       home:openingScreen(),
       routes: {
